@@ -113,13 +113,11 @@ namespace ChartApp.Actors
                 }
 
                 // register this series with the ChartingActor
-                _chartingActor.Tell(new ChartingActor.AddSeries(
-                    CounterSeries[watch.Counter]()));
+                _chartingActor.Tell(new ChartingActor.AddSeries(CounterSeries[watch.Counter]()));
 
                 // tell the counter actor to begin publishing its
                 // statistics to the _chartingActor
-                _counterActors[watch.Counter].Tell(new SubscribeCounter(watch.Counter,
-                    _chartingActor));
+                _counterActors[watch.Counter].Tell(new SubscribeCounter(watch.Counter, _chartingActor));
             });
 
             Receive<Unwatch>(unwatch =>
@@ -130,12 +128,10 @@ namespace ChartApp.Actors
                 }
 
                 // unsubscribe the ChartingActor from receiving any more updates
-                _counterActors[unwatch.Counter].Tell(new UnsubscribeCounter(
-                    unwatch.Counter, _chartingActor));
+                _counterActors[unwatch.Counter].Tell(new UnsubscribeCounter(unwatch.Counter, _chartingActor));
 
                 // remove this series from the ChartingActor
-                _chartingActor.Tell(new ChartingActor.RemoveSeries(
-                    unwatch.Counter.ToString()));
+                _chartingActor.Tell(new ChartingActor.RemoveSeries(unwatch.Counter.ToString()));
             });
         }
     }
